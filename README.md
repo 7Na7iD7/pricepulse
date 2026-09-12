@@ -395,6 +395,5 @@ Bayesian hyperparameter optimization | Unified model explainability | scikit-lea
 ### ✨ **Built with ❤️ for smarter pricing decisions** ✨
 
 [![GitHub](https://img.shields.io/badge/GitHub-7Na7iD7-181717?style=for-the-badge&logo=github)](https://github.com/7Na7iD7)
-[![GitHub](https://img.shields.io/badge/GitHub-nikifarzami-181717?style=for-the-badge&logo=github)](https://github.com/nikifarzami)
 
 </div>
