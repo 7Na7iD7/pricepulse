@@ -1,0 +1,45 @@
+{
+  "saved_at_utc": "2026-09-06T16:58:51.178637+00:00",
+  "feature_names": [
+    "battery_power",
+    "blue",
+    "clock_speed",
+    "dual_sim",
+    "fc",
+    "four_g",
+    "int_memory",
+    "m_dep",
+    "mobile_wt",
+    "n_cores",
+    "pc",
+    "px_height",
+    "px_width",
+    "ram",
+    "sc_h",
+    "sc_w",
+    "talk_time",
+    "three_g",
+    "touch_screen",
+    "wifi"
+  ],
+  "metrics": {
+    "accuracy": 0.9783333333333334,
+    "cv_mean": 0.9549999999999998,
+    "cv_std": 0.012494896917525639
+  },
+  "best_model_name": "stacking_lr",
+  "ensemble_weights": {
+    "logistic_regression": 0.17533547265270533,
+    "svm": 0.17533490937746254,
+    "xgboost": 0.16351401513295266,
+    "mlp": 0.16220045726684207,
+    "lightgbm": 0.1619393791918239,
+    "gradient_boosting": 0.16167576637821338
+  },
+  "meta_learner_comparison": {
+    "stacking_with_logreg_meta": 0.9783333333333334,
+    "stacking_with_xgboost_meta": 0.96
+  },
+  "domain_feature_engineering_tested": true,
+  "domain_feature_engineering_helped": false
+}

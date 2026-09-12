@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>PricePulse — دمو پیش‌بینی قیمت موبایل</title>
+<style>
+    * { box-sizing: border-box; }
+    body {
+        font-family: Tahoma, Arial, sans-serif;
+        background: #f4f6f9;
+        margin: 0;
+        padding: 30px 15px;
+        color: #222;
+    }
+    .container {
+        max-width: 900px;
+        margin: 0 auto;
+    }
+    h1 {
+        text-align: center;
+        color: #1F4E79;
+        margin-bottom: 4px;
+    }
+    .subtitle {
+        text-align: center;
+        color: #666;
+        margin-bottom: 30px;
+        font-size: 14px;
+    }
+    .card {
+        background: white;
+        border-radius: 12px;
+        padding: 24px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        margin-bottom: 20px;
+    }
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 14px;
+    }
+    .field label {
+        display: block;
+        font-size: 13px;
+        color: #444;
+        margin-bottom: 4px;
+    }
+    .field-error {
+        color: #B42318;
+        font-size: 12px;
+        margin-top: 4px;
+    }
+    .form-control {
+        width: 100%;
+        padding: 8px 10px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        font-size: 14px;
+    }
+    button {
+        display: block;
+        width: 100%;
+        margin-top: 20px;
+        padding: 12px;
+        background: #2E75B6;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+    button:hover { background: #1F4E79; }
+    .error {
+        background: #FDECEA;
+        border: 1px solid #F5C2C0;
+        color: #B42318;
+        padding: 14px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+    }
+    .result {
+        text-align: center;
+    }
+    .result .label {
+        font-size: 28px;
+        font-weight: bold;
+        color: #1F4E79;
+        margin: 10px 0;
+    }
+    .confidence {
+        color: #555;
+        margin-bottom: 20px;
+    }
+    .bar-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 8px;
+        font-size: 13px;
+    }
+    .bar-track {
+        flex: 1;
+        background: #eee;
+        border-radius: 6px;
+        overflow: hidden;
+        height: 18px;
+    }
+    .bar-fill {
+        height: 100%;
+        background: #55A868;
+    }
+    .bar-label {
+        width: 90px;
+        text-align: left;
+    }
+    .bar-pct {
+        width: 50px;
+        text-align: right;
+    }
+    .meta {
+        text-align: center;
+        color: #999;
+        font-size: 12px;
+        margin-top: 10px;
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <h1>PricePulse 📱💰</h1>
+    <p class="subtitle">دمو زنده — پیش‌بینی بازه‌ی قیمت موبایل بر اساس مشخصات فنی</p>
+
+    {% if error %}
+    <div class="error">⚠️ {{ error }}</div>
+    {% endif %}
+
+    {% if result %}
+    <div class="card result">
+        <div>بازه‌ی قیمت پیش‌بینی‌شده:</div>
+        <div class="label">{{ result.price_label }}</div>
+        <div class="confidence">اطمینان مدل: {{ result.confidence|floatformat:1 }}%</div>
+
+        {% for key, prob in result.class_probabilities.items %}
+        <div class="bar-row">
+            <div class="bar-label">
+                {% if key == "0" %}ارزان{% elif key == "1" %}متوسط{% elif key == "2" %}بالا{% else %}بسیار بالا{% endif %}
+            </div>
+            <div class="bar-track">
+                <div class="bar-fill" style="width: {{ prob|floatformat:1 }}%;"></div>
+            </div>
+            <div class="bar-pct">{{ prob|floatformat:1 }}%</div>
+        </div>
+        {% endfor %}
+
+        <div class="meta">زمان پردازش: {{ result.inference_ms }} میلی‌ثانیه</div>
+    </div>
+
+    {% if explanation %}
+    <div class="card">
+        <div style="text-align:center; font-weight:bold; color:#1F4E79; margin-bottom:14px;">
+            چرا مدل این تصمیم را گرفت؟
+        </div>
+        {% for item in explanation.top_factors %}
+        <div class="bar-row">
+            <div class="bar-label">{{ item.feature_fa }}</div>
+            <div class="bar-track">
+                <div class="bar-fill" style="width: {{ item.bar_width_pct }}%; background: {% if item.is_positive %}#55A868{% else %}#C0504D{% endif %};"></div>
+            </div>
+            <div class="bar-pct">{{ item.contribution|floatformat:3 }}</div>
+        </div>
+        {% endfor %}
+        <div class="meta">{{ explanation.explanation_note }}</div>
+    </div>
+    {% endif %}
+    {% endif %}
+
+    <div class="card">
+        <form method="post">
+            {% csrf_token %}
+            <div class="grid">
+                {% for field in form %}
+                <div class="field">
+                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.errors %}
+                    <div class="field-error">{{ field.errors.0 }}</div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+            <button type="submit">پیش‌بینی قیمت</button>
+        </form>
+    </div>
+
+    <p class="meta">این صفحه یک لایه‌ی نمایشی (Django) است که به سرویس PricePulse API متصل می‌شود: {{ api_url }}</p>
+</div>
+</body>
+</html>

@@ -1,0 +1,49 @@
+{
+  "saved_at_utc": "2026-09-10T05:23:07.008782+00:00",
+  "feature_names": [
+    "mobile_wt",
+    "ram_gb",
+    "fc",
+    "pc",
+    "num_rear_cameras",
+    "battery_power",
+    "screen_size",
+    "launched_year",
+    "brand_Apple",
+    "brand_Google",
+    "brand_Honor",
+    "brand_Huawei",
+    "brand_Infinix",
+    "brand_Lenovo",
+    "brand_Motorola",
+    "brand_Nokia",
+    "brand_OnePlus",
+    "brand_Oppo",
+    "brand_POCO",
+    "brand_Realme",
+    "brand_Samsung",
+    "brand_Sony",
+    "brand_Tecno",
+    "brand_Vivo",
+    "brand_Xiaomi"
+  ],
+  "metrics": {
+    "accuracy": 0.8396624472573839,
+    "cv_mean": 0.7813104013104013,
+    "cv_std": 0.0273531756739376
+  },
+  "best_model_name": "weighted_voting",
+  "ensemble_weights": {
+    "lightgbm": 0.16979577985089134,
+    "xgboost": 0.1686186064104694,
+    "gradient_boosting": 0.16706318204474674,
+    "random_forest": 0.1666531156210562,
+    "catboost": 0.16433411929397873,
+    "svm": 0.16353519677885753
+  },
+  "nested_cv_lightgbm_unbiased": {
+    "mean": 0.7795,
+    "std": 0.0297
+  },
+  "dataset": "Mobiles Dataset 2025 (Kaggle mirror), 790 rows, 25 features incl. one-hot brand"
+}
